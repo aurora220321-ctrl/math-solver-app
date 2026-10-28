@@ -1,31 +1,42 @@
 // api/solve.js
 export const config = {
-  maxDuration: 60, // 최대 60초 실행 허용 (고난도 킬러 문제 연산 대응)
+  maxDuration: 60,
 };
 
 export default async function handler(req, res) {
-  // CORS 및 메서드 제어
+  // CORS 헤더 설정
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   try {
-    const { action, promptText, imageData, textContent, userKey } = req.body;
+    const { promptText, imageData, textContent, userKey } = req.body;
 
-    // Vercel 환경변수 또는 사용자 전달 키 사용
+    // Vercel 환경변수에 등록된 GEMINI_API_KEY 사용
     const apiKey = process.env.GEMINI_API_KEY || userKey;
 
     if (!apiKey) {
       return res.status(400).json({ 
-        error: 'API 키가 설정되지 않았습니다. Vercel 환경 변수(GEMINI_API_KEY)에 등록하거나 화면에서 API 키를 입력해주세요.' 
+        error: 'Vercel 환경 변수에 GEMINI_API_KEY가 설정되어 있지 않습니다.' 
       });
     }
 
-    const endpoint = `[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$){apiKey}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const parts = [];
 
-    // 이미지 페이로드 구성
     if (imageData) {
       const rawBase64 = imageData.replace(/^data:image\/\w+;base64,/, '');
       const mimeType = imageData.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
@@ -37,12 +48,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // 텍스트 문제 페이로드 구성
     if (textContent) {
       parts.push({ text: `[문제 입력]\n${textContent}` });
     }
 
-    // 메인 시스템 프롬프트
     parts.push({ text: promptText });
 
     const response = await fetch(endpoint, {
@@ -60,7 +69,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       return res.status(response.status).json({ 
-        error: errorData.error?.message || 'Gemini API 호출에 실패했습니다.' 
+        error: errorData.error?.message || `Gemini API 오류 (${response.status})` 
       });
     }
 
@@ -71,7 +80,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'AI 해설을 생성하지 못했습니다.' });
     }
 
-    // 수식 이스케이프 보정 및 JSON 파싱
     let parsedData = null;
     let cleaned = candidateText.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
 
@@ -100,6 +108,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Server error:', error);
-    return res.status(500).json({ error: error.message || '서버 내부 오류가 발생했습니다.' });
+    return res.status(500).json({ error: error.message || '서버 오류가 발생했습니다.' });
   }
 }
