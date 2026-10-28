@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>풀이노트 고등 수학</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+  <!-- KaTeX CSS & JS for Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #2b5f4d;
+      --primary-hover: #224c3d;
+      --primary-light: #eef5f2;
+      --bg-grid: #e2e8f0;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --accent-yellow: #fef08a;
+      --danger: #dc2626;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      color: var(--text-main);
+      background-color: #f8fafc;
+      background-image: 
+        linear-gradient(to right, rgba(203, 213, 225, 0.45) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(203, 213, 225, 0.45) 1px, transparent 1px);
+      background-size: 24px 24px;
+      min-height: 100vh;
+      padding: 32px 16px 64px 16px;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* Top Bar Header */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .logo-group h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #111827;
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 2px;
+      display: inline-block;
+    }
+
+    .logo-group .badge {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .api-key-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+
+    .api-key-btn:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .tagline {
+      font-size: 15px;
+      color: #4b5563;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Main Box Card */
+    .main-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(8px);
+      margin-bottom: 28px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .step-indicator {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    /* Tabs */
+    .tabs-wrapper {
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 10px 0;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* Tab Content Area */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Photo Upload Box */
+    .upload-zone {
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 40px 20px;
+      text-align: center;
+      background: #ffffff;
+      transition: border-color 0.2s;
+    }
+
+    .upload-zone.dragover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .upload-zone-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 24px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-camera {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-camera:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #374151;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-file:hover {
+      background: #f9fafb;
+    }
+
+    /* Image Preview */
+    .preview-box {
+      display: none;
+      text-align: center;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: var(--radius-md);
+      border: 1px solid #e2e8f0;
+      margin-top: 14px;
+    }
+
+    .preview-box img {
+      max-width: 100%;
+      max-height: 380px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      object-fit: contain;
+    }
+
+    .btn-remove-img {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--danger);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Handwriting Canvas */
+    .canvas-container {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 280px;
+      background: #ffffff;
+      cursor: crosshair;
+    }
+
+    .canvas-tools {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-tool {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      cursor: pointer;
+    }
+
+    /* Direct Text Input */
+    .text-input-area {
+      width: 100%;
+      height: 160px;
+      padding: 14px;
+      font-size: 15px;
+      line-height: 1.6;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    .text-input-area:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(43, 95, 77, 0.15);
+    }
+
+    /* Submit Section */
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(43, 95, 77, 0.2);
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Result Solution Card */
+    .solution-card {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .solution-header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .solution-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-chip {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    .problem-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 16px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin-bottom: 24px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .concept-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .concept-tag {
+      background: #fef9c3;
+      color: #854d0e;
+      border: 1px solid #fde047;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Step Items */
+    .step-item {
+      margin-bottom: 20px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-content {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #334155;
+    }
+
+    /* Final Answer Box */
+    .final-answer-box {
+      margin-top: 24px;
+      background: #ecfdf5;
+      border: 2px solid #a7f3d0;
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .final-answer-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #065f46;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .final-answer-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #047857;
+    }
+
+    /* Mistake Warning Note */
+    .tip-box {
+      margin-top: 16px;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      gap: 8px;
+      line-height: 1.6;
+    }
+
+    /* Similar Problem Section */
+    .similar-section {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 2px dashed #cbd5e1;
+    }
+
+    .similar-action-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .similar-action-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 6px;
+    }
+
+    .similar-action-desc {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 14px;
+    }
+
+    .btn-similar {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-similar:hover {
+      background: var(--primary-hover);
+    }
+
+    .similar-problem-display {
+      display: none;
+      margin-top: 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: left;
+    }
+
+    .similar-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #15803d;
+      background: #dcfce7;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .btn-toggle-similar-sol {
+      margin-top: 16px;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .similar-solution-content {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Loading Spinner Card */
+    .loading-card {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 20px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .loading-subtext {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    /* Modal for API Key */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      max-width: 460px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: monospace;
+      margin-bottom: 16px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-cancel {
+      padding: 8px 14px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      padding: 8px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="logo-group">
+        <h1>풀이노트</h1>
+        <span class="badge">고등 수학</span>
+      </div>
+      <button class="api-key-btn" onclick="openApiKeyModal()">
+        <span>🔑</span>
+        <span>API 키 설정</span>
+      </button>
+    </header>
+
+    <p class="tagline">문제를 사진으로 찍거나 손글씨로 올리면 핵심 단계별 풀이를 제공합니다.</p>
+
+    <!-- Main Card Input -->
+    <main class="main-card">
+      <div class="card-header">
+        <h2 class="card-title">문제 입력하기</h2>
+        <span class="step-indicator">Step 1</span>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <nav class="tabs-wrapper">
+        <button class="tab-btn active" onclick="switchTab('photo')">사진</button>
+        <button class="tab-btn" onclick="switchTab('draw')">손글씨</button>
+        <button class="tab-btn" onclick="switchTab('text')">직접 입력</button>
+      </nav>
+
+      <!-- TAB 1: Photo Upload -->
+      <section id="panel-photo" class="tab-panel active">
+        <div class="upload-zone" id="drop-zone">
+          <div class="upload-zone-title">문제 사진을 올려 주세요</div>
+          <div class="button-group">
+            <label class="btn-camera">
+              <span>📷</span> 카메라로 찍기
+              <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSelect(event)">
+            </label>
+            <label class="btn-file">
+              사진 선택
+              <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
+            </label>
+          </div>
+          <div style="font-size:12px; color:#94a3b8; margin-top:12px;">문제가 잘리지 않게 수식과 번호가 선명하도록 촬영해주세요</div>
+        </div>
+
+        <div class="preview-box" id="preview-box">
+          <img id="image-preview" src="" alt="문제 미리보기" />
+          <div>
+            <button class="btn-remove-img" onclick="clearSelectedImage()">🗑️ 사진 지우기 및 다시 선택</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Handwriting Canvas -->
+      <section id="panel-draw" class="tab-panel">
+        <div class="canvas-container">
+          <canvas id="math-canvas"></canvas>
+          <div class="canvas-tools">
+            <button class="btn-tool" onclick="clearCanvas()">지우기</button>
+            <button class="btn-tool" onclick="undoCanvas()">되돌리기</button>
+          </div>
+        </div>
+        <div style="font-size:12px; color:#94a3b8; margin-top:8px;">마우스나 손가락 터치로 수식이나 기호를 필기할 수 있습니다.</div>
+      </section>
+
+      <!-- TAB 3: Text Input -->
+      <section id="panel-text" class="tab-panel">
+        <textarea id="text-input" class="text-input-area" placeholder="문제 본문이나 수식을 입력하세요. (예: 두 실수 a, b에 대하여 a+b=4, ab=2일 때 a^3 + b^3의 값을 구하시오.)"></textarea>
+        <div style="font-size:12px; color:#94a3b8; margin-top:6px;">Tip: 분수나 지수는 일반 문장(x^2, 3/4 등)으로 작성해도 AI가 자동 인식합니다.</div>
+      </section>
+
+      <!-- Submit Button -->
+      <div class="action-row">
+        <button class="btn-submit" id="submit-btn" onclick="startSolving()">
+          <span>문제 풀이 시작하기</span>
+          <span>→</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- Loading Card -->
+    <section class="loading-card" id="loading-card">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loading-main-text">문제를 분석하고 맞춤 해설을 구성 중입니다...</div>
+      <div class="loading-subtext" id="loading-sub-text">고등 수학 핵심 개념 탐색 및 단계별 수식 정리 중</div>
+    </section>
+
+    <!-- Solution Display Card -->
+    <article class="solution-card" id="solution-card">
+      <header class="solution-header">
+        <div class="solution-title">
+          <span>📘</span>
+          <span>핵심 풀이 노트</span>
+        </div>
+        <span class="category-chip" id="sol-category">고등 수학</span>
+      </header>
+
+      <div class="problem-box" id="sol-problem-text"></div>
+
+      <div class="concept-tag-list" id="sol-concepts"></div>
+
+      <!-- Steps Container -->
+      <div id="sol-steps"></div>
+
+      <!-- Final Answer -->
+      <div class="final-answer-box">
+        <div class="final-answer-label">Final Answer</div>
+        <div class="final-answer-value" id="sol-final-answer"></div>
+      </div>
+
+      <!-- Warning Tip -->
+      <div class="tip-box" id="sol-tip-box">
+        <span>💡</span>
+        <div id="sol-tip-text"></div>
+      </div>
+
+      <!-- Similar Problem Practice -->
+      <section class="similar-section">
+        <div class="similar-action-box" id="similar-action-box">
+          <div class="similar-action-title">✨ 이 문제 완전히 내 것으로 만들기</div>
+          <div class="similar-action-desc">방금 학습한 수학 공식과 풀이 원리를 활용하는 유사 변형 문제를 풀어보세요.</div>
+          <button class="btn-similar" id="btn-gen-similar" onclick="generateSimilarProblem()">
+            <span>같은 유형의 문제 더 풀어보기</span>
+            <span>✍️</span>
+          </button>
+        </div>
+
+        <div class="similar-problem-display" id="similar-display">
+          <span class="similar-badge">유사 연습 문항</span>
+          <div id="similar-problem-text" style="font-size:15px; line-height:1.7; color:#1e293b;"></div>
+          
+          <button class="btn-toggle-similar-sol" onclick="toggleSimilarSolution()">
+            정답 및 풀이 과정 확인하기 ▾
+          </button>
+
+          <div class="similar-solution-content" id="similar-solution-area">
+            <div id="similar-solution-steps"></div>
+            <div style="margin-top:10px; font-weight:700; color:#065f46;" id="similar-solution-ans"></div>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <footer>
+      풀이노트 고등 수학 © 2026. Powered by Google Gemini AI.
+    </footer>
+  </div>
+
+  <!-- API Key Modal -->
+  <div class="modal-backdrop" id="api-modal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>🔑</span> Google Gemini API 키 설정
+      </div>
+      <p class="modal-desc">
+        Google AI Studio에서 발급받은 API 키를 입력해주세요. 입력된 키는 외부 서버에 전송되지 않고 브라우저(LocalStorage)에만 안전하게 보관됩니다.
+      </p>
+      <input type="password" id="api-key-input" class="modal-input" placeholder="AIzaSy..." />
+      <div class="modal-buttons">
+        <button class="btn-cancel" onclick="closeApiKeyModal()">취소</button>
+        <button class="btn-save" onclick="saveApiKey()">저장하기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Variables
+    let currentTab = 'photo';
+    let selectedImageBase64 = null;
+    let canvas, ctx;
+    let isDrawing = false;
+    let drawingHistory = [];
+    let currentSolutionData = null;
+
+    // Load Stored API Key
+    let geminiApiKey = localStorage.getItem('gemini_api_key') || '';
+
+    // Initialize Canvas
+    window.addEventListener('DOMContentLoaded', () => {
+      initCanvas();
+      setupDragDrop();
+    });
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', 
+          (tab === 'photo' && idx === 0) ||
+          (tab === 'draw' && idx === 1) ||
+          (tab === 'text' && idx === 2)
+        );
+      });
+
+      document.getElementById('panel-photo').classList.toggle('active', tab === 'photo');
+      document.getElementById('panel-draw').classList.toggle('active', tab === 'draw');
+      document.getElementById('panel-text').classList.toggle('active', tab === 'text');
+
+      if (tab === 'draw') {
+        resizeCanvas();
+      }
+    }
+
+    // Modal Handlers
+    function openApiKeyModal() {
+      document.getElementById('api-key-input').value = geminiApiKey;
+      document.getElementById('api-modal').style.display = 'flex';
+    }
+
+    function closeApiKeyModal() {
+      document.getElementById('api-modal').style.display = 'none';
+    }
+
+    function saveApiKey() {
+      const val = document.getElementById('api-key-input').value.trim();
+      if (!val) {
+        alert('API 키를 입력해주세요.');
+        return;
+      }
+      geminiApiKey = val;
+      localStorage.setItem('gemini_api_key', val);
+      closeApiKeyModal();
+      alert('API 키가 성공적으로 저장되었습니다.');
+    }
+
+    // Canvas Functions
+    function initCanvas() {
+      canvas = document.getElementById('math-canvas');
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+
+      const start = (e) => {
+        isDrawing = true;
+        saveState();
+        draw(e);
+      };
+      const move = (e) => {
+        if (!isDrawing) return;
+        draw(e);
+      };
+      const stop = () => {
+        isDrawing = false;
+        ctx.beginPath();
+      };
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', stop);
+
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        start(e.touches[0]);
+      }, { passive: false });
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        move(e.touches[0]);
+      }, { passive: false });
+      window.addEventListener('touchend', stop);
+    }
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const currentWidth = canvas.width;
+      if (rect.width > 0 && currentWidth !== rect.width) {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.drawImage(canvas, 0, 0);
+
+        canvas.width = rect.width;
+        canvas.height = 280;
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(tempCanvas, 0, 0);
+
+        ctx.lineWidth = 2.8;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#1e293b';
+      }
+    }
+
+    function draw(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.pageX) - rect.left;
+      const y = (e.clientY || e.pageY) - rect.top;
+
+      ctx.lineWidth = 2.8;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#0f172a';
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    function saveState() {
+      if (drawingHistory.length > 15) drawingHistory.shift();
+      drawingHistory.push(canvas.toDataURL());
+    }
+
+    function clearCanvas() {
+      if (!ctx) return;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawingHistory = [];
+    }
+
+    function undoCanvas() {
+      if (drawingHistory.length === 0) return;
+      const lastState = drawingHistory.pop();
+      const img = new Image();
+      img.src = lastState;
+      img.onload = () => {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
+    }
+
+    function isCanvasEmpty() {
+      const pixelBuffer = new Uint32Array(
+        ctx.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+      );
+      return !pixelBuffer.some(color => color !== 0xffffffff && color !== 0);
+    }
+
+    // Photo Handling & Compression
+    function setupDragDrop() {
+      const zone = document.getElementById('drop-zone');
+      zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('dragover');
+      });
+      zone.addEventListener('dragleave', () => {
+        zone.classList.remove('dragover');
+      });
+      zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          compressAndPreview(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    function handleFileSelect(event) {
+      if (event.target.files && event.target.files[0]) {
+        compressAndPreview(event.target.files[0]);
+      }
+    }
+
+    // High quality client-side image compression
+    function compressAndPreview(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const maxDim = 1280;
+          let w = img.width;
+          let h = img.height;
+
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          const c = document.createElement('canvas');
+          c.width = w;
+          c.height = h;
+          const cx = c.getContext('2d');
+          cx.fillStyle = '#ffffff';
+          cx.fillRect(0, 0, w, h);
+          cx.drawImage(img, 0, 0, w, h);
+
+          const compressed = c.toDataURL('image/jpeg', 0.88);
+          selectedImageBase64 = compressed;
+
+          document.getElementById('image-preview').src = compressed;
+          document.getElementById('preview-box').style.display = 'block';
+          document.getElementById('drop-zone').style.display = 'none';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearSelectedImage() {
+      selectedImageBase64 = null;
+      document.getElementById('camera-input').value = '';
+      document.getElementById('file-input').value = '';
+      document.getElementById('preview-box').style.display = 'none';
+      document.getElementById('drop-zone').style.display = 'block';
+    }
+
+    // Solver Core Logic
+    async function startSolving() {
+      let imageData = null;
+      let textContent = '';
+
+      if (currentTab === 'photo') {
+        if (!selectedImageBase64) {
+          alert('카메라로 사진을 찍거나 이미지를 선택해주세요.');
+          return;
+        }
+        imageData = selectedImageBase64;
+      } else if (currentTab === 'draw') {
+        if (isCanvasEmpty()) {
+          alert('손글씨로 수식이나 문제를 작성해주세요.');
+          return;
+        }
+        imageData = canvas.toDataURL('image/png');
+      } else if (currentTab === 'text') {
+        textContent = document.getElementById('text-input').value.trim();
+        if (!textContent) {
+          alert('수식 또는 문제 내용을 입력해주세요.');
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        const promptText = `
+당신은 대한민국 고등학교 수학 일타 강사이자 최고의 수학 솔루션 전문가입니다.
+주어진 고등학교 수학 문제(킬러/내신/수능 기출 포함)를 정확하고 깊이 있게 분석하여, 고등학생이 완벽하게 이해할 수 있도록 명쾌한 단계별 풀이를 제공해주세요.
+
+다음 JSON 규격으로만 응답해야 합니다. 다른 불필요한 서론이나 마크다운 코드블록은 제외하고 순수 JSON 텍스트만 출력하세요:
+{
+  "category": "세부 과목 및 단원명 (예: 수학(상) - 다항식의 연산)",
+  "recognizedProblem": "사진/필기에서 인식한 문제 전문 (모든 수식은 LaTeX로 $...$ 또는 $$...$$로 표기)",
+  "coreConcepts": ["핵심 개념1", "사용 공식2", "유형 키워드"],
+  "steps": [
+    {
+      "stepNumber": 1,
+      "title": "단계별 핵심 전략 요약",
+      "explanation": "해당 단계의 풀이 과정 및 수식 전개 (KaTeX 호환 LaTeX 수식을 풍부하게 사용)"
+    }
+  ],
+  "finalAnswer": "최종 정답 (예: 12, 루트3, $a=3, b=-2$ 등)",
+  "mistakeTip": "학생들이 자주 실수하거나 감점당하기 쉬운 결정적 포인트 또는 검산 팁"
+}
+
+수식 작성 규칙:
+- 인라인 수식은 $...$, 독립 행 수식은 $$...$$ 로 감싸주세요.
+- 분수는 \\frac{a}{b}, 거듭제곱은 a^n 형태로 정확한 LaTeX 문법을 준수하세요.
+        `;
+
+        let resultData = null;
+
+        // Vercel Serverless Function 호출 시도
+        if (window.location.protocol.startsWith('http')) {
+          try {
+            const apiRes = await fetch('/api/solve', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'solve',
+                promptText: promptText,
+                imageData: imageData,
+                textContent: textContent,
+                userKey: geminiApiKey
+              })
+            });
+            if (apiRes.ok) {
+              const resJson = await apiRes.json();
+              resultData = resJson.data;
+            }
+          } catch (e) {
+            console.warn('Vercel API 미사용, 클라이언트 직접 호출 모드로 전환:', e);
+          }
+        }
+
+        // 로컬 파일이거나 Vercel 엔드포인트 미구현 시 직접 Gemini API 호출
+        if (!resultData) {
+          if (!geminiApiKey) {
+            setLoading(false);
+            openApiKeyModal();
+            alert('상단 [API 키 설정] 버튼을 눌러 Gemini API 키를 먼저 입력해주세요.');
+            return;
+          }
+          resultData = await callGeminiDirectly(promptText, imageData, textContent, geminiApiKey);
+        }
+
+        currentSolutionData = resultData;
+        renderSolution(resultData);
+      } catch (err) {
+        console.error('풀이 오류:', err);
+        alert('문제를 풀이하는 도중 오류가 발생했습니다: ' + (err.message || '네트워크 상태를 확인해주세요.'));
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Client-side Direct API Call
+    async function callGeminiDirectly(prompt, imageBase64, textContent, apiKey) {
+      updateLoadingStatus("AI가 조건을 분석하고 수식을 연립 계산 중입니다...", "목동/대치동 기출 및 수능 킬러 풀이 알고리즘 가동");
+      
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+      const contentsParts = [];
+      if (imageBase64) {
+        const rawBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+        const mimeType = imageBase64.startsWith('data:image/png') ? 'image/png' : 'image/jpeg';
+        contentsParts.push({
+          inlineData: {
+            mimeType: mimeType,
+            data: rawBase64
+          }
+        });
+      }
+      if (textContent) {
+        contentsParts.push({ text: `[입력 문제]\n${textContent}` });
+      }
+      contentsParts.push({ text: prompt });
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 65000);
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [{ parts: contentsParts }],
+          generationConfig: {
+            temperature: 0.15,
+            topP: 0.95
+          }
+        })
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error?.message || `API 호출 실패 (${response.status})`);
+      }
+
+      const resData = await response.json();
+      const rawText = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error('AI 응답을 수신하지 못했습니다.');
+
+      return robustJSONParse(rawText);
+    }
+
+    // Robust JSON Parser with Regex Fixes for Math/LaTeX
+    function robustJSONParse(text) {
+      let cleaned = text.trim();
+      cleaned = cleaned.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*\$/i, '').trim();
+
+      try {
+        return JSON.parse(cleaned);
+      } catch (e1) {
+        try {
+          const match = cleaned.match(/\{[\s\S]*\}/);
+          if (match) {
+            let candidate = match[0];
+            // Fix unescaped backslashes in math formulas
+            candidate = candidate.replace(/(?<!\\)\\(?!["\\\/bfnrtu]|u[0-9a-fA-F]{4})/g, '\\\\');
+            return JSON.parse(candidate);
+          }
+        } catch (e2) {
+          console.warn('JSON 파싱 2차 실패, 원시 텍스트 fallback 생성');
+        }
+
+        return {
+          category: "고등 수학",
+          recognizedProblem: "문제가 성공적으로 분석되었습니다.",
+          coreConcepts: ["개념 풀이"],
+          steps: [
+            { stepNumber: 1, title: "상세 해설", explanation: text }
+          ],
+          finalAnswer: "상세 풀이 참조",
+          mistakeTip: "풀이 단계별 수식을 꼼꼼히 확인하세요."
+        };
+      }
+    }
+
+    // Render Math and UI
+    function renderSolution(data) {
+      document.getElementById('sol-category').textContent = data.category || '고등 수학';
+      document.getElementById('sol-problem-text').textContent = data.recognizedProblem || '인식된 문제';
+
+      const conceptsContainer = document.getElementById('sol-concepts');
+      conceptsContainer.innerHTML = '';
+      (data.coreConcepts || []).forEach(c => {
+        const span = document.createElement('span');
+        span.className = 'concept-tag';
+        span.textContent = `# ${c}`;
+        conceptsContainer.appendChild(span);
+      });
+
+      const stepsContainer = document.getElementById('sol-steps');
+      stepsContainer.innerHTML = '';
+      (data.steps || []).forEach(s => {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'step-item';
+        stepDiv.innerHTML = `
+          <div class="step-title">
+            <span>Step ${s.stepNumber}.</span>
+            <span>${escapeHtml(s.title || '')}</span>
+          </div>
+          <div class="step-content">${escapeHtml(s.explanation || '')}</div>
+        `;
+        stepsContainer.appendChild(stepDiv);
+      });
+
+      document.getElementById('sol-final-answer').textContent = data.finalAnswer || '';
+      document.getElementById('sol-tip-text').textContent = data.mistakeTip || '계산 실수가 빈번한 단계이므로 부호 처리에 유의하세요.';
+
+      document.getElementById('solution-card').style.display = 'block';
+      document.getElementById('similar-display').style.display = 'none';
+
+      // KaTeX Auto-Render
+      if (window.renderMathInElement) {
+        renderMathInElement(document.getElementById('solution-card'), {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      document.getElementById('solution-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Generate Similar Problem
+    async function generateSimilarProblem() {
+      if (!currentSolutionData) return;
+
+      const btn = document.getElementById('btn-gen-similar');
+      btn.disabled = true;
+      btn.textContent = '쌍둥이 변형 문제 생성 중... ⏳';
+
+      const prompt = `
+방금 학생이 학습한 문제의 정보는 다음과 같습니다:
+- 단원: ${currentSolutionData.category}
+- 개념/공식: ${(currentSolutionData.coreConcepts || []).join(', ')}
+- 원본 문제: ${currentSolutionData.recognizedProblem}
+
+위 문제와 **동일한 수학적 개념 및 원리**를 점검할 수 있는 고등학교 수준의 **새로운 유사 변형(쌍둥이) 문제** 1개를 출제하고 그 정답과 간결한 풀이를 작성해주세요.
+
+다음 JSON 규격으로만 응답해주세요:
+{
+  "problemText": "변형된 문제 본문 (LaTeX는 $...$ 또는 $$...$$로 표기)",
+  "solutionSteps": "단계별 풀이 요약 (LaTeX 수식 포함)",
+  "answer": "최종 정답"
+}
+      `;
+
+      try {
+        let simData = null;
+        if (window.location.protocol.startsWith('http')) {
+          try {
+            const apiRes = await fetch('/api/solve', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'similar',
+                promptText: prompt,
+                userKey: geminiApiKey
+              })
+            });
+            if (apiRes.ok) {
+              const resJson = await apiRes.json();
+              simData = resJson.data;
+            }
+          } catch(e) {}
+        }
+
+        if (!simData) {
+          simData = await callGeminiDirectly(prompt, null, null, geminiApiKey);
+        }
+
+        renderSimilarProblem(simData);
+      } catch (e) {
+        alert('유사 문제를 생성하지 못했습니다: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>같은 유형의 문제 더 풀어보기</span> <span>✍️</span>`;
+      }
+    }
+
+    function renderSimilarProblem(data) {
+      const display = document.getElementById('similar-display');
+      document.getElementById('similar-problem-text').textContent = data.problemText || '';
+      document.getElementById('similar-solution-steps').textContent = data.solutionSteps || '';
+      document.getElementById('similar-solution-ans').textContent = `정답: ${data.answer || ''}`;
+
+      document.getElementById('similar-solution-area').style.display = 'none';
+      display.style.display = 'block';
+
+      if (window.renderMathInElement) {
+        renderMathInElement(display, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      display.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleSimilarSolution() {
+      const area = document.getElementById('similar-solution-area');
+      area.style.display = (area.style.display === 'none' || area.style.display === '') ? 'block' : 'none';
+    }
+
+    function setLoading(isLoading) {
+      document.getElementById('loading-card').style.display = isLoading ? 'block' : 'none';
+      document.getElementById('submit-btn').disabled = isLoading;
+      if (isLoading) {
+        document.getElementById('solution-card').style.display = 'none';
+        document.getElementById('loading-card').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function updateLoadingStatus(main, sub) {
+      document.getElementById('loading-main-text').textContent = main;
+      document.getElementById('loading-sub-text').textContent = sub;
+    }
+
+    function escapeHtml(string) {
+      return String(string)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>

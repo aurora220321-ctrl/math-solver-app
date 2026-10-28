@@ -1,0 +1,12 @@
+{
+  "name": "math-solver-app",
+  "version": "1.0.0",
+  "description": "고등수학 문제 풀이노트 AI 웹 애플리케이션",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
